@@ -1,3 +1,5 @@
+主要提供 m2 和rax3000m 简单 固件。
+
 # 高质量<免费>交流群
 
 [IPQ技术讨论群](https://qm.qq.com/q/v7nMhzB4oU)
