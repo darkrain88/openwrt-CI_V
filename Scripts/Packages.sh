@@ -2,6 +2,37 @@
 # SPDX-License-Identifier: MIT
 # Copyright (C) 2026 VIKINGYFY
 
+# PassWall packages update
+UPDATE_PASSWALL() {
+
+	echo " "
+	echo "========== Update PassWall packages =========="
+
+	# 删除 OpenWrt 自带旧核心包
+	rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,v2ray-plugin,xray-plugin,geoview,shadow-tls}
+
+	# 删除旧 PassWall LuCI
+	rm -rf feeds/luci/applications/luci-app-passwall
+
+	# 删除可能存在的旧目录
+	rm -rf package/passwall-packages
+	rm -rf package/passwall-luci
+
+	# 拉取 PassWall 核心依赖
+	git clone --depth=1 \
+		https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git \
+		package/passwall-packages
+
+	# 拉取 PassWall LuCI
+	git clone --depth=1 \
+		https://github.com/Openwrt-Passwall/openwrt-passwall.git \
+		package/passwall-luci
+
+	echo "========== PassWall update done =========="
+}
+
+UPDATE_PASSWALL
+
 #安装和更新软件包
 UPDATE_PACKAGE() {
 	local PKG_NAME=$1
@@ -58,8 +89,8 @@ UPDATE_PACKAGE "shadcn" "eamonxg/luci-theme-shadcn" "main"
 UPDATE_PACKAGE "momo" "nikkinikki-org/OpenWrt-momo" "main"
 UPDATE_PACKAGE "nikki" "nikkinikki-org/OpenWrt-nikki" "main"
 UPDATE_PACKAGE "openclash" "vernesong/OpenClash" "dev" "pkg"
-UPDATE_PACKAGE "passwall" "Openwrt-Passwall/openwrt-passwall" "main" "pkg"
-UPDATE_PACKAGE "passwall2" "Openwrt-Passwall/openwrt-passwall2" "main" "pkg"
+#UPDATE_PACKAGE "passwall" "Openwrt-Passwall/openwrt-passwall" "main" "pkg"
+#UPDATE_PACKAGE "passwall2" "Openwrt-Passwall/openwrt-passwall2" "main" "pkg"
 
 UPDATE_PACKAGE "diskmanager" "4IceG/luci-app-mini-diskmanager" "main"
 UPDATE_PACKAGE "easytier" "EasyTier/luci-app-easytier" "main"
@@ -135,7 +166,7 @@ UPDATE_VERSION() {
 
 #UPDATE_VERSION "软件包名" "测试版，true，可选，默认为否"
 #UPDATE_VERSION "sing-box"
-UPDATE_VERSION "xray"
+
 
 #引入私有扩展脚本
 if [ -f "$GITHUB_WORKSPACE/Scripts/PRIVATE.sh" ]; then
